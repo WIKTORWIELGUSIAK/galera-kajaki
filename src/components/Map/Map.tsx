@@ -10,6 +10,7 @@ import {
 } from "geojson";
 import mapboxgl, { GeoJSONSource } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import RiverForm from "../RiverForm/RiverForm";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
@@ -26,8 +27,12 @@ const Map = () => {
   const [selectedRivers, setSelectedRivers] = useState<Feature[]>([]);
   const [lngLat, setLngLat] = useState({ lng: 20, lat: 50.04 });
   const [zoom, setZoom] = useState(8);
+  const [openRiverForm, setOpenRiverForm] = useState(false);
+  const [riverInput, setRiverInput] = useState("");
+  const [coordinates, setCoordinates] = useState();
   const map = useRef<mapboxgl.Map | null>(null);
 
+  console.log(riverInput);
   // ##########################################################################################################
   // UseEffects that start with application
   // ##########################################################################################################
@@ -46,13 +51,12 @@ const Map = () => {
       });
     }
   }, [selectedRivers]);
-
   useEffect(() => {
     if (map.current) return;
 
     map.current = new mapboxgl.Map({
       container: "map",
-      style: "mapbox://styles/mapbox/streets-v11",
+      style: "mapbox://styles/mapbox/streets-v12",
       center: [lngLat.lng, lngLat.lat],
       zoom: zoom,
     });
@@ -116,31 +120,47 @@ const Map = () => {
   };
 
   // ##########################################################################################################
+  // Function to set cursor to pointer on hover over rivers lines
+  // ##########################################################################################################
+  map.current?.on("mouseenter", "rivers", () => {
+    if (map.current) map.current.getCanvas().style.cursor = "pointer";
+  });
+
+  // ##########################################################################################################
+  // Function to change back cursor when it leaves
+  // ##########################################################################################################
+  map.current?.on("mouseleave", "rivers", () => {
+    if (map.current) map.current.getCanvas().style.cursor = "";
+  });
+
+  // ##########################################################################################################
+  // Function set coordinates from clicked river to state
+  // ##########################################################################################################
+  map.current?.on("click", "rivers", (e: any) => {
+    setCoordinates(e.features[0].geometry.coordinates.slice());
+  });
+
+  // ##########################################################################################################
   // Return form map component
   // ##########################################################################################################
   return (
     <div>
-      <div>
-        <div
-          style={{ width: "100%", height: "100vh" }}
-          id="map"
-          className="rivers-map"
-        />
-      </div>
+      <div
+        style={{ width: "100%", height: "100vh" }}
+        id="map"
+        className="rivers-map"
+      />
       <button
-        onClick={() => {
-          setRivers("Wisła");
-        }}
+        style={{ position: "absolute", top: "1vh", left: "1vh" }}
+        onClick={() => setOpenRiverForm(true)}
       >
-        Wisła
+        Dodaj rzeki
       </button>
-      <button
-        onClick={() => {
-          setRivers("Odra");
-        }}
-      >
-        Odra
-      </button>
+      <RiverForm
+        open={openRiverForm}
+        setOpen={setOpenRiverForm}
+        setInputText={setRivers}
+      />
     </div>
   );
 };
