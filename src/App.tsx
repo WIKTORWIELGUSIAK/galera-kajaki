@@ -1,11 +1,12 @@
 /** @format */
 
-import Map from "./components/Map/Map";
+import CustomMap from "./components/Map/Map";
 import "./App.css";
+import MapPage from "./pages/MapPage";
 function App() {
   return (
     <div className="App">
-      <Map />
+      <MapPage />
     </div>
   );
 }

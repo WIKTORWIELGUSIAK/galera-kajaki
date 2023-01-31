@@ -1,123 +1,180 @@
 /** @format */
 
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import {
-  Geometry,
+  Feature,
   FeatureCollection,
   GeoJsonProperties,
-  Feature,
+  LineString,
+  Point,
 } from "geojson";
-import mapboxgl, { GeoJSONSource } from "mapbox-gl";
+import {
+  GeoJSONSource,
+  Marker,
+  Map as MapboxGLMap,
+  MapMouseEvent,
+  EventData,
+  LngLatLike,
+} from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import RiverForm from "../RiverForm/RiverForm";
+import "/src/App.css";
+import PathFinder from "geojson-path-finder";
+import CustomMarker from "../Marker/CustomMarker";
+import { MapProps, Road, SourcesConfig } from "../../interfaces";
+import Layer from "../Layer/Layer";
+import Source from "../Source/Source";
+import { findClosestCoords } from "../../Helpers/findClosestCords";
 
-mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
+const Map = (props: MapProps) => {
+  const { selectedRivers, newRoadCoords, setNewRoadCoords, roads, setMap } =
+    props;
+  const startMarkerRef = useRef<Marker | null>(null);
+  const endMarkerRef = useRef<Marker | null>(null);
 
-const Map = () => {
-  // ##########################################################################################################
-  // Local states
-  // ##########################################################################################################
-  const [riversData, setRiversData] = useState<
-    FeatureCollection<Geometry, GeoJsonProperties>
-  >({
-    type: "FeatureCollection",
-    features: [],
-  });
-  const [selectedRivers, setSelectedRivers] = useState<Feature[]>([]);
-  const [lngLat, setLngLat] = useState({ lng: 20, lat: 50.04 });
-  const [zoom, setZoom] = useState(8);
-  const [openRiverForm, setOpenRiverForm] = useState(false);
-  const [riverInput, setRiverInput] = useState("");
-  const [coordinates, setCoordinates] = useState();
-  const map = useRef<mapboxgl.Map | null>(null);
-
-  console.log(riverInput);
-  // ##########################################################################################################
-  // UseEffects that start with application
-  // ##########################################################################################################
+  const [pathFinder, setPathFinder] =
+    useState<PathFinder<LineString, GeoJsonProperties>>();
+  const [loadingSource, setLoadingSource] = useState(true);
+  const initialMapState = {
+    lngLat: { lng: 20, lat: 50.04 },
+    zoom: 8,
+  };
+  const [coordinates, setCoordinates] = useState<number[][]>([]);
+  const [startMarkerCords, setStartMarkerCords] = useState<number[]>([]);
+  const [endMarkerCords, setEndMarkerCords] = useState<number[]>([]);
+  const map = useRef<MapboxGLMap | undefined>();
+  const mapContainer = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    axios
-      .get("polishRivers.geojson")
-      .then((res) => setRiversData(JSON.parse(JSON.stringify(res.data))))
-      .catch((err) => console.log(err));
+    if (map.current) return;
+    map.current = new MapboxGLMap({
+      container: mapContainer.current!,
+      accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
+      style: "mapbox://styles/mapbox/outdoors-v12",
+      center: [initialMapState.lngLat.lng, initialMapState.lngLat.lat],
+      zoom: initialMapState.zoom,
+    });
   }, []);
 
   useEffect(() => {
-    if (map.current?.getSource("map-data")) {
-      (map.current.getSource("map-data") as GeoJSONSource).setData({
+    let tempCoordinates: number[][] = [];
+    selectedRivers.map((selectedRiver: Feature) => {
+      if (selectedRiver.geometry.type === "LineString")
+        selectedRiver.geometry.coordinates.map((cord: number[]) => {
+          tempCoordinates.push(cord);
+        });
+    });
+    setCoordinates((prevCoordinates) => {
+      return tempCoordinates;
+    });
+  }, [selectedRivers]);
+  useEffect(() => {
+    if (newRoadCoords.length > 0) {
+      startMarkerRef.current = new Marker({ draggable: true });
+      setStartMarkerCords(newRoadCoords[0]);
+      endMarkerRef.current = new Marker({ draggable: true });
+      setEndMarkerCords(newRoadCoords[newRoadCoords.length - 1]);
+    } else {
+      startMarkerRef.current = null;
+      endMarkerRef.current = null;
+    }
+  }, [newRoadCoords]);
+  const listener = (e: MapMouseEvent) => {
+    if (coordinates.length === 0) {
+      return;
+    }
+    const cords = findClosestCoords(coordinates, [e.lngLat.lng, e.lngLat.lat]);
+
+    if (!startMarkerRef.current) {
+      createStartMarker(cords);
+    } else if (!endMarkerRef.current) {
+      createEndMarker(cords);
+    } else {
+      updateEndMarker(cords);
+    }
+  };
+  const createStartMarker = (cords: number[]) => {
+    startMarkerRef.current = new Marker({ draggable: true });
+    setStartMarkerCords(cords);
+  };
+
+  const createEndMarker = (cords: number[]) => {
+    endMarkerRef.current = new Marker({ draggable: true });
+    setEndMarkerCords(cords);
+  };
+  const updateEndMarker = (cords: number[]) => {
+    setEndMarkerCords(cords);
+  };
+
+  useEffect(() => {
+    if (map.current) {
+      map.current.on("click", "rivers", listener);
+    }
+    return () => {
+      map.current?.off("click", "rivers", listener);
+    };
+  }, [map, coordinates]);
+
+  const startCoordinateTest: Feature<Point, GeoJsonProperties> = {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: startMarkerCords,
+    },
+    properties: {
+      name: "Dinagat Islands",
+    },
+  };
+  const endCoordinateTest: Feature<Point, GeoJsonProperties> = {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: endMarkerCords,
+    },
+    properties: {
+      name: "Dinagat Islands",
+    },
+  };
+  useEffect(() => {
+    if (pathFinder && startMarkerCords && endMarkerCords) {
+      const path = pathFinder.findPath(startCoordinateTest, endCoordinateTest);
+      if (path) setNewRoadCoords(path.path);
+    }
+  }, [startMarkerCords, endMarkerCords]);
+  useEffect(() => {
+    const geoJSONObject: FeatureCollection<LineString> = {
+      type: "FeatureCollection",
+      features: selectedRivers as Feature<LineString, GeoJsonProperties>[],
+    };
+    const newPathFinder: PathFinder<LineString, GeoJsonProperties> =
+      new PathFinder(geoJSONObject);
+    setPathFinder(newPathFinder);
+  }, [selectedRivers]);
+  useEffect(() => {
+    if (map.current?.getSource("mapData")) {
+      (map.current.getSource("mapData") as GeoJSONSource).setData({
         type: "FeatureCollection",
         features: selectedRivers,
       });
     }
   }, [selectedRivers]);
   useEffect(() => {
-    if (map.current) return;
-
-    map.current = new mapboxgl.Map({
-      container: "map",
-      style: "mapbox://styles/mapbox/streets-v12",
-      center: [lngLat.lng, lngLat.lat],
-      zoom: zoom,
-    });
-    // ##########################################################################################################
-    // Function to load structure and layer to map
-    // ##########################################################################################################
-    map.current.on("style.load", () => {
-      map.current?.addSource("map-data", {
-        type: "geojson",
-        data: { type: "FeatureCollection", features: selectedRivers },
-      });
-      map.current?.addLayer({
-        id: "rivers",
-        type: "line",
-        source: "map-data",
-        layout: {
-          "line-cap": "round",
-          "line-join": "round",
+    if (map.current?.getSource("newRoad")) {
+      (map.current.getSource("newRoad") as GeoJSONSource).setData({
+        type: "Feature",
+        geometry: {
+          type: "LineString",
+          coordinates: newRoadCoords,
         },
-        paint: {
-          "line-color": "green",
-          "line-width": 2,
+        properties: {
+          title: "Road",
+          "marker-symbol": "monument",
         },
       });
-    });
-  }, [map.current, selectedRivers]);
-
-  // ##########################################################################################################
-  // Functionts used in map component
-  // ##########################################################################################################
-
-  // ##########################################################################################################
-  // Function to fetch data (will be used instead of funcion to fetch data at start application)
-  // ##########################################################################################################
-  const fetchRiversData = () => {
-    axios
-      .get("polishRivers.geojson")
-      .then((res) => setRiversData(JSON.parse(JSON.stringify(res.data))))
-      .catch((err) => console.log(err));
-  };
-
-  // ##########################################################################################################
-  // Function to filter rivers data by river name
-  // ##########################################################################################################
-  const filtredData = (props: string) => {
-    return riversData.features.filter((el) =>
-      el.properties?.RWB_NAME.includes(props)
-    );
-  };
+    }
+  }, [newRoadCoords]);
 
   // ##########################################################################################################
   // Function to set rivers to display on map
   // ##########################################################################################################
-  const setRivers = (props: string) => {
-    if (!selectedRivers.some((el) => el.properties?.RWB_NAME.includes(props))) {
-      if (riversData.features.length === 0) {
-        fetchRiversData();
-      }
-      setSelectedRivers([...selectedRivers, ...filtredData(props)]);
-    }
-  };
 
   // ##########################################################################################################
   // Function to set cursor to pointer on hover over rivers lines
@@ -136,33 +193,98 @@ const Map = () => {
   // ##########################################################################################################
   // Function set coordinates from clicked river to state
   // ##########################################################################################################
-  map.current?.on("click", "rivers", (e: any) => {
-    setCoordinates(e.features[0].geometry.coordinates.slice());
-  });
 
-  // ##########################################################################################################
-  // Return form map component
-  // ##########################################################################################################
+  function handleMarkerDragEnd(
+    e: EventData,
+    firstMarker: boolean = true
+  ): void {
+    const coords = findClosestCoords(coordinates, [
+      e.target.getLngLat().lng,
+      e.target.getLngLat().lat,
+    ]);
+    if (firstMarker) {
+      setStartMarkerCords((prev: number[]) => coords);
+    } else {
+      setEndMarkerCords((prev: number[]) => coords);
+    }
+  }
+  console.log(selectedRivers);
+  const sourcesConfig: SourcesConfig = {
+    setMap: setMap,
+    map: map.current as MapboxGLMap,
+    roads: roads,
+    setLoadingSource: setLoadingSource,
+    loadingSource,
+    data: [
+      {
+        id: "mapData",
+        sourceData: [],
+      },
+      {
+        id: "newRoad",
+        sourceData: newRoadCoords,
+      },
+    ],
+  };
+
   return (
     <div>
       <div
         style={{ width: "100%", height: "100vh" }}
-        id="map"
+        ref={mapContainer}
         className="rivers-map"
-      />
-      <button
-        style={{ position: "absolute", top: "1vh", left: "1vh" }}
-        onClick={() => setOpenRiverForm(true)}
       >
-        Dodaj rzeki
-      </button>
-      <RiverForm
-        open={openRiverForm}
-        setOpen={setOpenRiverForm}
-        setInputText={setRivers}
-      />
+        <Source {...sourcesConfig} />
+
+        <Layer
+          id="rivers"
+          source="mapData"
+          color="lightblue"
+          map={map.current}
+          loadingSource={loadingSource}
+        />
+        <Layer
+          id="road"
+          source="newRoad"
+          color="green"
+          map={map.current}
+          loadingSource={loadingSource}
+        />
+        {roads.map((road: Road) => {
+          return (
+            <Layer
+              // hover={hovered === road}
+              key={road.id}
+              id={`Layer${JSON.stringify(road.id)}`}
+              source={`Road${road.id}`}
+              color={JSON.parse(road.properties).color}
+              map={map.current}
+              loadingSource={loadingSource}
+            />
+          );
+        })}
+      </div>
+      {startMarkerRef.current ? (
+        <CustomMarker
+          map={map.current}
+          marker={startMarkerRef.current}
+          lngLat={startMarkerCords as LngLatLike}
+          onDragEnd={(e) => handleMarkerDragEnd(e)}
+          coords={newRoadCoords}
+        />
+      ) : null}
+      {endMarkerCords ? (
+        <CustomMarker
+          map={map.current}
+          marker={endMarkerRef.current}
+          lngLat={endMarkerCords as LngLatLike}
+          onDragEnd={(e) => handleMarkerDragEnd(e, false)}
+          coords={newRoadCoords}
+        />
+      ) : null}
     </div>
   );
 };
+// });
 
 export default Map;

@@ -1,0 +1,62 @@
+/** @format */
+
+.RoadInformations {
+  background-color: #f0edeb;
+  border-radius: 0 20px 20px 0;
+  padding: 1em;
+  position: absolute;
+  top: 2em;
+  left: 1em;
+  z-index: 99;
+  width: 200px;
+  /* font-family: "Roboto"; */
+  max-height: 90vh;
+}
+
+.h2 {
+  font-size: 2em;
+}
+
+.description {
+  font-size: 1em;
+  margin-top: 2em;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: auto auto;
+  margin: 1em 0;
+}
+
+.h1 {
+  font-family: "RocknRoll One";
+  letter-spacing: 0.2em;
+  /* font-family: "Roboto", cursive; */
+  font-size: 2em;
+}
+
+.road {
+  background-color: #fefefe;
+  display: flex;
+  border-radius: 20px;
+  margin: 0.4em;
+  padding: 0 1em;
+  font-size: 20px;
+  align-items: center;
+  height: 48px;
+}
+
+.buttons {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+}
+
+.arrowIcon circle {
+  fill: #34e6a2;
+  color: #34e6a2;
+}
+
+.editIcon {
+  margin-right: 10px;
+}
