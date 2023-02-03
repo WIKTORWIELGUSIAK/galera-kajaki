@@ -1,8 +1,5 @@
 /** @format */
 
-import { Feature, GeoJsonProperties, LineString, Position } from "geojson";
-import { Map } from "mapbox-gl";
-import { Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 import { Road, RoadInformationsInterface } from "../../interfaces";
 import { ArrowLeftCircle, Edit } from "lucide-react";
@@ -31,6 +28,7 @@ const RoadInformations = ({
 
     setSelectedRivers([]);
     setNewRoadCoords([]);
+    map.setLayoutProperty(`road`, "visibility", "visible");
     navigate("/");
   };
   const editClickHandler = () => {
@@ -41,10 +39,8 @@ const RoadInformations = ({
       tempRoad == road;
       return tempRoad;
     });
-    console.log(roads[0] === road);
     if (foundRoad) {
       index = roads.indexOf(foundRoad);
-      console.log(index);
       map.setPaintProperty(
         "road",
         "line-color",
@@ -72,7 +68,6 @@ const RoadInformations = ({
           className={style.arrowIcon}
         />
       </div>
-      {/* <EditBar /> */}
     </div>
   );
 };

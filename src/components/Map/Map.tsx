@@ -25,9 +25,13 @@ import Layer from "../Layer/Layer";
 import Source from "../Source/Source";
 import { findClosestCoords } from "../../Helpers/findClosestCords";
 
-const Map = (props: MapProps) => {
-  const { selectedRivers, newRoadCoords, setNewRoadCoords, roads, setMap } =
-    props;
+const Map = ({
+  selectedRivers,
+  newRoadCoords,
+  setNewRoadCoords,
+  roads,
+  setMap,
+}: MapProps) => {
   const startMarkerRef = useRef<Marker | null>(null);
   const endMarkerRef = useRef<Marker | null>(null);
 
@@ -39,8 +43,9 @@ const Map = (props: MapProps) => {
     zoom: 8,
   };
   const [coordinates, setCoordinates] = useState<number[][]>([]);
-  const [startMarkerCords, setStartMarkerCords] = useState<number[]>([]);
-  const [endMarkerCords, setEndMarkerCords] = useState<number[]>([]);
+  const [startMarkerCoords, setStartMarkerCoords] = useState<number[]>([]);
+  const [endMarkerCoords, setEndMarkerCoords] = useState<number[]>([]);
+
   const map = useRef<MapboxGLMap | undefined>();
   const mapContainer = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -69,12 +74,14 @@ const Map = (props: MapProps) => {
   useEffect(() => {
     if (newRoadCoords.length > 0) {
       startMarkerRef.current = new Marker({ draggable: true });
-      setStartMarkerCords(newRoadCoords[0]);
+      setStartMarkerCoords(newRoadCoords[0]);
       endMarkerRef.current = new Marker({ draggable: true });
-      setEndMarkerCords(newRoadCoords[newRoadCoords.length - 1]);
+      setEndMarkerCoords(newRoadCoords[newRoadCoords.length - 1]);
     } else {
       startMarkerRef.current = null;
       endMarkerRef.current = null;
+      setStartMarkerCoords([]);
+      setEndMarkerCoords([]);
     }
   }, [newRoadCoords]);
   const listener = (e: MapMouseEvent) => {
@@ -93,15 +100,15 @@ const Map = (props: MapProps) => {
   };
   const createStartMarker = (cords: number[]) => {
     startMarkerRef.current = new Marker({ draggable: true });
-    setStartMarkerCords(cords);
+    setStartMarkerCoords(cords);
   };
 
   const createEndMarker = (cords: number[]) => {
     endMarkerRef.current = new Marker({ draggable: true });
-    setEndMarkerCords(cords);
+    setEndMarkerCoords(cords);
   };
   const updateEndMarker = (cords: number[]) => {
-    setEndMarkerCords(cords);
+    setEndMarkerCoords(cords);
   };
 
   useEffect(() => {
@@ -113,32 +120,32 @@ const Map = (props: MapProps) => {
     };
   }, [map, coordinates]);
 
-  const startCoordinateTest: Feature<Point, GeoJsonProperties> = {
+  const startCoordinate: Feature<Point, GeoJsonProperties> = {
     type: "Feature",
     geometry: {
       type: "Point",
-      coordinates: startMarkerCords,
+      coordinates: startMarkerCoords,
     },
     properties: {
       name: "Dinagat Islands",
     },
   };
-  const endCoordinateTest: Feature<Point, GeoJsonProperties> = {
+  const endCoordinate: Feature<Point, GeoJsonProperties> = {
     type: "Feature",
     geometry: {
       type: "Point",
-      coordinates: endMarkerCords,
+      coordinates: endMarkerCoords,
     },
     properties: {
       name: "Dinagat Islands",
     },
   };
   useEffect(() => {
-    if (pathFinder && startMarkerCords && endMarkerCords) {
-      const path = pathFinder.findPath(startCoordinateTest, endCoordinateTest);
+    if (pathFinder && startMarkerCoords && endMarkerCoords) {
+      const path = pathFinder.findPath(startCoordinate, endCoordinate);
       if (path) setNewRoadCoords(path.path);
     }
-  }, [startMarkerCords, endMarkerCords]);
+  }, [startMarkerCoords, endMarkerCoords]);
   useEffect(() => {
     const geoJSONObject: FeatureCollection<LineString> = {
       type: "FeatureCollection",
@@ -203,12 +210,11 @@ const Map = (props: MapProps) => {
       e.target.getLngLat().lat,
     ]);
     if (firstMarker) {
-      setStartMarkerCords((prev: number[]) => coords);
+      setStartMarkerCoords((prev: number[]) => coords);
     } else {
-      setEndMarkerCords((prev: number[]) => coords);
+      setEndMarkerCoords((prev: number[]) => coords);
     }
   }
-  console.log(selectedRivers);
   const sourcesConfig: SourcesConfig = {
     setMap: setMap,
     map: map.current as MapboxGLMap,
@@ -226,7 +232,6 @@ const Map = (props: MapProps) => {
       },
     ],
   };
-
   return (
     <div>
       <div
@@ -239,14 +244,14 @@ const Map = (props: MapProps) => {
         <Layer
           id="rivers"
           source="mapData"
-          color="lightblue"
+          color="#79bcec"
           map={map.current}
           loadingSource={loadingSource}
         />
         <Layer
           id="road"
           source="newRoad"
-          color="green"
+          color="black"
           map={map.current}
           loadingSource={loadingSource}
         />
@@ -268,16 +273,16 @@ const Map = (props: MapProps) => {
         <CustomMarker
           map={map.current}
           marker={startMarkerRef.current}
-          lngLat={startMarkerCords as LngLatLike}
+          lngLat={startMarkerCoords as LngLatLike}
           onDragEnd={(e) => handleMarkerDragEnd(e)}
           coords={newRoadCoords}
         />
       ) : null}
-      {endMarkerCords ? (
+      {endMarkerCoords ? (
         <CustomMarker
           map={map.current}
           marker={endMarkerRef.current}
-          lngLat={endMarkerCords as LngLatLike}
+          lngLat={endMarkerCoords as LngLatLike}
           onDragEnd={(e) => handleMarkerDragEnd(e, false)}
           coords={newRoadCoords}
         />

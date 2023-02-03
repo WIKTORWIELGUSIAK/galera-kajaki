@@ -125,3 +125,14 @@ export interface SelectedRiversFormInterface {
   selectedRivers: Feature<LineString, GeoJsonProperties>[];
   setSelectedRivers: Dispatch<Feature<LineString, GeoJsonProperties>[]>;
 }
+
+export interface ModalInterface {
+  setFirstOpen: Dispatch<any>;
+}
+export interface LinkProps {
+  name: string;
+  addNew: boolean;
+  clickHandler: () => void;
+  mouseEnterHandler: () => void;
+  mouseLeaveHandler: () => void;
+}

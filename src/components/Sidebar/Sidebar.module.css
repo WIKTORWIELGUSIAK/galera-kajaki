@@ -8,11 +8,11 @@
   top: 2em;
   left: 1em;
   z-index: 99;
-  width: 200px;
-  /* font-family: "Roboto"; */
+  min-width: 230px;
   overflow-y: scroll;
   direction: rtl;
   max-height: 90vh;
+  font-family: "Lato", sans-serif;
 }
 .wrapper::-webkit-scrollbar {
   width: 5px;
@@ -37,13 +37,15 @@
   display: grid;
   grid-template-columns: auto auto;
   margin: 1em 0;
+  justify-content: left;
+  margin: 1em;
 }
 
 .h1 {
   font-family: "RocknRoll One";
   letter-spacing: 0.2em;
-  /* font-family: "Roboto", cursive; */
   font-size: 2em;
+  margin-left: 0.5em;
 }
 
 .road {
@@ -55,8 +57,51 @@
   font-size: 20px;
   align-items: center;
   height: 48px;
+  box-sizing: border-box;
 }
 
-/* .icon {
-  background-color: green;
-} */
+.road:hover {
+  border: 2px solid #34e6a2;
+  font-weight: bold;
+  background-color: #f3f3f3;
+}
+
+.hideButton {
+  padding: 1em;
+  position: absolute;
+  top: 1.5em;
+  left: 250px;
+  z-index: 100;
+  overflow-y: scroll;
+  font-family: "Lato", sans-serif;
+  display: none;
+}
+@media (max-width: 1024px) {
+  .hideButton {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+  .hideButton.hidden {
+    transform: translateX(-250px) rotate(540deg);
+    transition: transform 0.5s ease-in-out;
+  }
+  .wrapper {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0.5s, opacity 0.5s;
+  }
+  .wrapper.hidden {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+.hideButton circle {
+  fill: black;
+  color: #34e6a2;
+}
+.hideButton polyline,
+.hideButton line {
+  fill: #34e6a2;
+  color: #34e6a2;
+}

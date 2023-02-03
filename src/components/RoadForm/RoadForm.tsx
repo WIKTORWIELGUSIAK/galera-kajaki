@@ -1,9 +1,7 @@
 /** @format */
 
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { ArrowLeftCircle } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Road, RoadFormInterface, RoadFormData } from "../../interfaces";
@@ -12,9 +10,6 @@ import axios from "axios";
 import SelectedRiversForm from "../SelectedRiversForm/SelectedRiversForm";
 import { replaceElement } from "../../Helpers/replaceElement";
 
-const schema = yup.object().shape({
-  name: yup.string().required(),
-});
 const RoadForm = ({
   map,
   road,
@@ -69,40 +64,27 @@ const RoadForm = ({
       .catch(function (error) {
         console.log(error);
       });
-    if (map.getSource(`Road${roads[roads.length - 1].id + 1}`)) {
-      return;
-    } else {
-      map.addSource(`Road${roads[roads.length - 1].id + 1}`, {
-        type: "geojson",
-        data: {
-          type: "Feature",
-          geometry: {
-            type: "LineString",
-            coordinates: newRoadCoords,
-          },
-          properties: {
-            title: "Road",
-            "marker-symbol": "monument",
-          },
-        },
-      });
-      if (!startEdit) {
-        const newRoad = {
-          id: roads[roads.length - 1].id + 1,
-          name: data.name,
-          roadCoordinates: JSON.stringify(newRoadCoords),
-          selectedRivers: JSON.stringify(selectedRivers),
-          properties: JSON.stringify({
-            description: data.description,
-            color: data.color,
-          }),
-        };
-        setRoads([...roads, newRoad]);
-        navigate("/");
+    if (roads.length > 0) {
+      if (map.getSource(`Road${roads[roads.length - 1].id + 1}`)) {
+        return;
       } else {
-        if (road) {
+        map.addSource(`Road${roads[roads.length - 1].id + 1}`, {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            geometry: {
+              type: "LineString",
+              coordinates: newRoadCoords,
+            },
+            properties: {
+              title: "Road",
+              "marker-symbol": "monument",
+            },
+          },
+        });
+        if (!startEdit) {
           const newRoad = {
-            id: road.id,
+            id: roads[roads.length - 1].id + 1,
             name: data.name,
             roadCoordinates: JSON.stringify(newRoadCoords),
             selectedRivers: JSON.stringify(selectedRivers),
@@ -111,15 +93,34 @@ const RoadForm = ({
               color: data.color,
             }),
           };
-          const tempRoads = roads;
-          setRoads(replaceElement(tempRoads, newRoad));
-          map.setLayoutProperty(`Layer${road.id}`, "visibility", "visible");
-
-          navigate(`/road${road.id}`);
+          setRoads([...roads, newRoad]);
+          navigate("/");
+        } else {
+          if (road) {
+            const newRoad = {
+              id: road.id,
+              name: data.name,
+              roadCoordinates: JSON.stringify(newRoadCoords),
+              selectedRivers: JSON.stringify(selectedRivers),
+              properties: JSON.stringify({
+                description: data.description,
+                color: data.color,
+              }),
+            };
+            const tempRoads = roads;
+            setRoads(replaceElement(tempRoads, newRoad));
+            map.setLayoutProperty(`Layer${road.id}`, "visibility", "visible");
+            navigate(`/road${road.id}`);
+          }
         }
+        setNewRoadCoords([]);
+        setSelectedRivers([]);
       }
-      setNewRoadCoords([]);
-      setSelectedRivers([]);
+      if (!startEdit) {
+        roads.map((road: Road) => {
+          map.setLayoutProperty(`Layer${road.id}`, "visibility", "visible");
+        });
+      }
     }
   };
   const {
@@ -127,14 +128,14 @@ const RoadForm = ({
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema), defaultValues: initialValues });
+  } = useForm({ defaultValues: initialValues });
 
   const navigate = useNavigate();
-
   const color = watch("color");
   useEffect(() => {
-    console.log(color);
-    if (color !== "") map.setPaintProperty("road", "line-color", color);
+    if (map.getLayer("road")) {
+      if (color !== "") map.setPaintProperty("road", "line-color", color);
+    }
   }, [color]);
   const clickArrowHandler = () => {
     if (road) {
@@ -144,22 +145,20 @@ const RoadForm = ({
       setStartEdit(false);
       setNewRoadCoords([]);
       setSelectedRivers([]);
+      map.setLayoutProperty("road", "visibility", "visible");
     } else {
       roads.map((road: Road) => {
         map.setLayoutProperty(`Layer${road.id}`, "visibility", "visible");
       });
       setNewRoadCoords([]);
       setSelectedRivers([]);
-      console.log(map.getStyle().layers);
     }
     road ? navigate(`/road${road.id}`) : navigate("/");
   };
   return (
     <div className={style.RoadForm}>
       <h2 className={style.h2}>{road ? road.name : "Nowa trasa"}</h2>
-      <p className={style.description}>
-        {/* {JSON.parse(road.properties).description} */}
-      </p>
+      <p className={style.description}></p>
       <div className={style.buttons}>
         <ArrowLeftCircle
           onClick={clickArrowHandler}
@@ -177,9 +176,18 @@ const RoadForm = ({
             id="name"
             type="text"
             className={style.textInput}
-            {...register("name")}
+            {...register("name", { required: true, minLength: 3 })}
           />
         </div>
+        {errors.name && (
+          <p
+            className={`${style.errorMessage} ${
+              errors.name ? style.error : ""
+            }`}
+          >
+            Proszę podaj jedną z polskich rzek
+          </p>
+        )}
         <label htmlFor="description">Opis trasy:</label>
         <input
           id="description"

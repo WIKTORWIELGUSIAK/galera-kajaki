@@ -8,8 +8,7 @@
   top: 2em;
   left: 1em;
   z-index: 99;
-  width: 200px;
-  /* font-family: "Roboto"; */
+  width: 230px;
   max-height: 90vh;
 }
 
@@ -31,7 +30,6 @@
 .h1 {
   font-family: "RocknRoll One";
   letter-spacing: 0.2em;
-  /* font-family: "Roboto", cursive; */
   font-size: 2em;
 }
 

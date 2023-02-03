@@ -1,16 +1,9 @@
 /** @format */
 
-import React from "react";
 import { ArrowRightCircle, PlusCircle } from "lucide-react";
+import { LinkProps } from "../../interfaces";
 import style from "./Link.module.css";
 
-interface LinkProps {
-  name: string;
-  addNew: boolean;
-  clickHandler: () => void;
-  mouseEnterHandler: () => void;
-  mouseLeaveHandler: () => void;
-}
 const Link = (prosp: LinkProps) => {
   const { name, addNew, clickHandler, mouseEnterHandler, mouseLeaveHandler } =
     prosp;

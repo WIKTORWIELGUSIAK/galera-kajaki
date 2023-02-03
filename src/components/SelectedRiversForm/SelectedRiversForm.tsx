@@ -1,9 +1,6 @@
 /** @format */
 
-import React from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import axios from "axios";
 import { Feature, GeoJsonProperties } from "geojson";
 import { LineString } from "@turf/turf";
@@ -12,15 +9,13 @@ import {
   SelectedRiversFormData,
   SelectedRiversFormInterface,
 } from "../../interfaces";
-const schema = yup.object().shape({
-  riverName: yup.string().required(),
-});
 
 function SelectedRiversForm({
   selectedRivers,
   setSelectedRivers,
 }: SelectedRiversFormInterface) {
   const submitForm = (data: SelectedRiversFormData) => {
+    console.log("submit");
     const config = {
       method: "get",
       url: `http://localhost:3001/search_river?name=${data.riverName}`,
@@ -55,18 +50,28 @@ function SelectedRiversForm({
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
     defaultValues: { riverName: "" },
   });
   return (
     <div>
-      <h4>Dodaj rzeki do wyświetlania</h4>
+      <h4>Dodaj rzeki do wyświetlania:</h4>
       <form onSubmit={handleSubmit(submitForm)} className="modalForm">
         <input
           type="text"
-          {...register("riverName")}
-          className={style.textInput}
+          {...register("riverName", { required: true, minLength: 3 })}
+          className={`${style.textInput} ${
+            errors.riverName ? style.error : ""
+          }`}
         />
+        {errors.riverName && (
+          <p
+            className={`${style.errorMessage} ${
+              errors.riverName ? style.error : ""
+            }`}
+          >
+            Proszę podaj jedną z polskich rzek
+          </p>
+        )}
         <button type="submit" className={style.button}>
           Dodaj rzekę
         </button>

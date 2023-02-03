@@ -1,0 +1,124 @@
+/** @format */
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+}
+
+.modal {
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  width: 50%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  text-align: center;
+  /* justify-content: space-around; */
+}
+
+.counter {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.arrowButton {
+  background-color: #34e6a283;
+  border-radius: 50%;
+  width: 4em;
+  height: 4em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 50%;
+  cursor: pointer;
+}
+
+.arrowButton:hover {
+  background-color: #22a06f83;
+  border-radius: 50%;
+  width: 4em;
+  height: 4em;
+}
+
+.right {
+  right: 20px;
+}
+.left {
+  left: 20px;
+}
+
+.skipButton {
+  background-color: #34e6a2;
+  position: absolute;
+  bottom: 1em;
+  right: 1em;
+  width: 7em;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+.skipButton:hover {
+  font-weight: bold;
+  background-color: #28af7b;
+}
+
+.content {
+  margin: 2em 5em;
+  font-size: 1.5em;
+}
+.tip {
+  margin: 0em 5em;
+  font-size: 1em;
+  margin-bottom: 2em;
+}
+
+.header {
+  font-size: 2.5em;
+  font-weight: bold;
+  margin: 1em;
+}
+
+.img {
+  width: 10em;
+  justify-self: center;
+  align-self: center;
+  margin-bottom: 1em;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.warrning {
+  color: red;
+}

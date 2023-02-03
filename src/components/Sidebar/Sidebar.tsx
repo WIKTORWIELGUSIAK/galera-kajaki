@@ -1,34 +1,14 @@
 /** @format */
 
-import React, {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+import { useState } from "react";
 import { Road, SidebarProps } from "../../interfaces";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import axios from "axios";
-import { Feature, GeoJsonProperties, LineString } from "geojson";
-import StyledSidebar from "./Sidebar.module.css";
+import style from "./Sidebar.module.css";
 import { useNavigate } from "react-router-dom";
 import Link from "../Link/Link";
+import { ArrowLeftCircle } from "lucide-react";
 
-const schema = yup.object().shape({
-  riverName: yup.string().required(),
-});
-
-const Sidebar = ({
-  selectedRivers,
-  setSelectedRivers,
-  setNewRoadCoords,
-  roads,
-  map,
-  setRoadId,
-}: SidebarProps) => {
+const Sidebar = ({ roads, map, setRoadId }: SidebarProps) => {
+  const [hidden, setHidden] = useState<boolean>(false);
   const clickHandler = (road: Road, index: number) => {
     navigate(`road${road.id}`);
     roads.map((road: Road) => {
@@ -98,36 +78,48 @@ const Sidebar = ({
   };
 
   const navigate = useNavigate();
-
+  const test = true;
   return (
-    <aside className={StyledSidebar.wrapper}>
-      <header className={StyledSidebar.header}>
-        <h1 className={StyledSidebar.h1}>Galera</h1>
-        <img src="/public/logo.png" alt="" />
-      </header>
-      <div className={StyledSidebar.road}>
-        <Link
-          name="Dodaj"
-          addNew={true}
-          clickHandler={addNewClickHandler}
-          mouseEnterHandler={() => {}}
-          mouseLeaveHandler={() => {}}
-        />
-      </div>
-      {roads.map((road: Road, index: number) => {
-        return (
-          <div key={road.id} className={StyledSidebar.road}>
+    <div>
+      <ArrowLeftCircle
+        className={`${style.hideButton} ${hidden ? style.hidden : ""}`}
+        onClick={() => {
+          setHidden(!hidden);
+        }}
+      />
+      <aside
+        className={`${style.wrapper} ${hidden ? style.hidden : style.show}`}
+      >
+        <div>
+          <header className={style.header}>
+            <h1 className={style.h1}>Galera</h1>
+            <img src="/logo.png" alt="" />
+          </header>
+          <div className={style.road}>
             <Link
-              name={road.name}
-              addNew={false}
-              clickHandler={() => clickHandler(road, index)}
-              mouseEnterHandler={() => mouseEnterHandler(road, index)}
-              mouseLeaveHandler={() => mouseLeaveHandler(road)}
+              name="Dodaj"
+              addNew={true}
+              clickHandler={addNewClickHandler}
+              mouseEnterHandler={() => {}}
+              mouseLeaveHandler={() => {}}
             />
           </div>
-        );
-      })}
-    </aside>
+          {roads.map((road: Road, index: number) => {
+            return (
+              <div key={road.id} className={style.road}>
+                <Link
+                  name={road.name}
+                  addNew={false}
+                  clickHandler={() => clickHandler(road, index)}
+                  mouseEnterHandler={() => mouseEnterHandler(road, index)}
+                  mouseLeaveHandler={() => mouseLeaveHandler(road)}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </aside>
+    </div>
   );
 };
 

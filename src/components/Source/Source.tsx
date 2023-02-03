@@ -47,9 +47,9 @@ function Sources({
                 },
               },
             });
-            setLoadingSource(false);
           }
         });
+        setLoadingSource(false);
       });
     });
   }, [map]);

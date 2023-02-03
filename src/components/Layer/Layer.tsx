@@ -1,6 +1,5 @@
 /** @format */
 
-import { GeoJSONSource } from "mapbox-gl";
 import { useEffect } from "react";
 import { LayerProps } from "../../interfaces";
 
