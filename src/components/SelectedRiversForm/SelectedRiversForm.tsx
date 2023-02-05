@@ -18,13 +18,14 @@ function SelectedRiversForm({
     console.log("submit");
     const config = {
       method: "get",
-      url: `http://localhost:3001/search_river?name=${data.riverName}`,
+      url: `galera-backend-service.vercel.app/search_river?name=${data.riverName}`,
       headers: {
         accept: "application/json; charset=utf-8",
         "Content-Type": "application/json; charset=utf-8",
       },
       data: {},
     };
+
     axios(config)
       .then(function (response) {
         let features: Feature<LineString, GeoJsonProperties>[] = [];
