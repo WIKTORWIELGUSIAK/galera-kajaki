@@ -28,7 +28,7 @@ const MapPage = () => {
   useEffect(() => {
     const config = {
       method: "get",
-      url: `http://localhost:3001/getRoads`,
+      url: `https://galera-backend-service.vercel.app/getRoads`,
       headers: {
         accept: "application/json; charset=utf-8",
         "Content-Type": "application/json; charset=utf-8",
