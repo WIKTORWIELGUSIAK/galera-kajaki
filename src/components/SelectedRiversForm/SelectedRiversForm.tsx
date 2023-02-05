@@ -18,7 +18,7 @@ function SelectedRiversForm({
     console.log("submit");
     const config = {
       method: "get",
-      url: `galera-backend-service.vercel.app/search_river?name=${data.riverName}`,
+      url: `https://galera-backend-service.vercel.app/search_river?name=${data.riverName}`,
       headers: {
         accept: "application/json; charset=utf-8",
         "Content-Type": "application/json; charset=utf-8",

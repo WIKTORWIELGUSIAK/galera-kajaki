@@ -51,7 +51,7 @@ const RoadForm = ({
     const config = {
       method: startEdit ? "put" : "post",
 
-      url: `galera-backend-service.vercel.app/roads/`,
+      url: `galera-backend-service.vercel.app/roads`,
       headers: {
         accept: "application/json; charset=utf-8",
         "Content-Type": "application/json; charset=utf-8",
