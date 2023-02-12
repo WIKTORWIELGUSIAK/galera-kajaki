@@ -36,3 +36,10 @@ I decided to select this library because it provides a convenient and efficient 
 
 <img align="left" alt="Axios" width="26px" src="https://api.iconify.design/simple-icons/axios.svg?color=purple&height=26" /> Axios
 
+## What I've learned
+
+While working on a project using Mapbox, I have expanded my knowledge about its tile system. Additionally, I have first time used TypeScript in my 'big' application. This time around, using TypeScript has greatly improved and accelerated my development process, instead of slowing it down. The ability to type things as I go, instead of constantly searching for answers, has been a big help. I am eager to gain even more experience with this technology. Previously, I tried to use Typescript for smaller applications, but during the development of this project I began to notice its advantages.
+
+I've used the CSS Modules for the first time. Previously I'd usually use TailwindCSS, styled-components or SASS to handle the styling, but since the UI isn't complicated at all in this projects, I've opted to using the simplest approach.
+
+It was my first experience using an ORM, and I was thoroughly impressed with the ease of use of Prisma. I look forward to exploring it further in the future.
