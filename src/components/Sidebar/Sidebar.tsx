@@ -78,7 +78,6 @@ const Sidebar = ({ roads, map, setRoadId }: SidebarProps) => {
   };
 
   const navigate = useNavigate();
-  const test = true;
   return (
     <div>
       <ArrowLeftCircle

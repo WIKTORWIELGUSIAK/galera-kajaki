@@ -24,7 +24,6 @@ const MapPage = () => {
   const [roadId, setRoadId] = useState<number | undefined>();
   const [startEdit, setStartEdit] = useState(false);
 
-  console.log(roads);
   useEffect(() => {
     const config = {
       method: "get",

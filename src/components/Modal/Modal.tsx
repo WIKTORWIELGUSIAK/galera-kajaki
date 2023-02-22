@@ -54,7 +54,7 @@ const Modal = ({ setFirstOpen }: ModalInterface) => {
       tip: "Wygląda on tak samo jak tryb dodawania więc nie będę go ponownie opisywał",
       photo: "/p5.jpg",
       warrning:
-        "Na koniec chciałbym zaznaczyć, że na niektórych trasach rzek występują dziury co jest spowodowane niedokładnością danych odnośnie ich przebiegu zaciągniętych ze strony państwowej. Są to jednak najdokładniejsze dane dostępne w internecie na ten moment jednak w ramach tego projektu będą one udoskonalane",
+        "Na koniec chciałbym zaznaczyć, że na niektórych trasach rzek występują dziury co jest spowodowane niedokładnością danych odnośnie ich przebiegu zaciągniętych ze strony państwowej. Są to jednak najdokładniejsze dane dostępne w internecie na ten moment.",
     },
   ];
   const handleClose = () => {
