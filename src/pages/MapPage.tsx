@@ -31,26 +31,26 @@ const MapPage = () => {
   const [roadId, setRoadId] = useState<number | undefined>();
   const [startEdit, setStartEdit] = useState(false);
 
-  useEffect(() => {
-    const config = {
-      method: "get",
-      url: `https://galera-backend-service.vercel.app/getRoads`,
-      headers: {
-        accept: "application/json; charset=utf-8",
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      data: {},
-    };
+  // useEffect(() => {
+  //   const config = {
+  //     method: "get",
+  //     url: `https://galera-backend-service.vercel.app/getRoads`,
+  //     headers: {
+  //       accept: "application/json; charset=utf-8",
+  //       "Content-Type": "application/json; charset=utf-8",
+  //     },
+  //     data: {},
+  //   };
 
-    axios(config)
-      .then(function (response) {
-        setRoads(response.data);
-        setRoadsLoading(false);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
+  //   axios(config)
+  //     .then(function (response) {
+  //       setRoads(response.data);
+  //       setRoadsLoading(false);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // }, []);
   useEffect(() => {
     if (map) {
       if (location.pathname === "/") {
@@ -95,7 +95,7 @@ const MapPage = () => {
   }, [map, location.pathname]);
   return !roadsLoading ? (
     <main className={StyledMapPage.main}>
-      {/* <Router>
+      <Router>
         {map ? (
           <Routes>
             <Route
@@ -118,7 +118,7 @@ const MapPage = () => {
                 />
               }
             />
-            {roads.map((road) => {
+            {/* {roads.map((road) => {
               return (
                 <Route
                   key={road.id}
@@ -158,7 +158,7 @@ const MapPage = () => {
                   }
                 />
               );
-            })}
+            })} */}
             <Route
               path={`/road/add`}
               element={
@@ -179,18 +179,18 @@ const MapPage = () => {
           </Routes>
         ) : (
           <div>Map Loading...</div>
-        )} */}
-      <CustomMap
-        selectedRivers={selectedRivers}
-        newRoadCoords={newRoadCoords}
-        setNewRoadCoords={setNewRoadCoords}
-        roads={roads}
-        setRoads={setRoads}
-        map={map}
-        setMap={setMap}
-        roadId={roadId}
-      />
-      {/* </Router> */}
+        )}
+        <CustomMap
+          selectedRivers={selectedRivers}
+          newRoadCoords={newRoadCoords}
+          setNewRoadCoords={setNewRoadCoords}
+          roads={roads}
+          setRoads={setRoads}
+          map={map}
+          setMap={setMap}
+          roadId={roadId}
+        />
+      </Router>
     </main>
   ) : (
     <div>Loading...</div>
