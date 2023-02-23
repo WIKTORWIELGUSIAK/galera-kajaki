@@ -1,6 +1,6 @@
 /** @format */
 
-import { useEffect } from "react";
+import { useEffect } from "../../shared";
 import { LayerProps } from "../../interfaces";
 
 function Layer({ id, source, color, map, loadingSource }: LayerProps) {

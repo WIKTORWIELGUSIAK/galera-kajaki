@@ -29,7 +29,7 @@
 
 .header {
   font-size: 1.5em;
-  font-weight: bold;
+  font-weight: 700;
   margin: clamp(1em, 0.81em + 0.952vw, 2em);
 }
 
@@ -91,7 +91,7 @@ button {
 }
 
 .skipButton:hover {
-  font-weight: bold;
+  font-weight: 700;
   background-color: #28af7b;
 }
 

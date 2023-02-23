@@ -1,11 +1,9 @@
 /** @format */
 
-import { useState } from "react";
+import { useState, useNavigate, ArrowLeftCircle } from "../../shared";
 import { Road, SidebarProps } from "../../interfaces";
 import style from "./Sidebar.module.css";
-import { useNavigate } from "react-router-dom";
 import Link from "../Link/Link";
-import { ArrowLeftCircle } from "lucide-react";
 
 const Sidebar = ({ roads, map, setRoadId }: SidebarProps) => {
   const [hidden, setHidden] = useState<boolean>(false);
@@ -51,7 +49,6 @@ const Sidebar = ({ roads, map, setRoadId }: SidebarProps) => {
     }
     roads.map((tempRoad: Road) => {
       if (tempRoad !== road) {
-        // map.setPaintProperty(`Layer${tempRoad.id}`, "line-color", "grey");
         map.setPaintProperty(`Layer${tempRoad.id}`, "line-opacity", 0.2);
       }
     });

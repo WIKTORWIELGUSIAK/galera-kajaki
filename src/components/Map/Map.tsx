@@ -1,17 +1,19 @@
 /** @format */
 
-import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Feature,
   FeatureCollection,
   GeoJsonProperties,
   LineString,
+  PathFinder,
   Point,
-} from "geojson";
-
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "../../shared";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "/src/App.css";
-import PathFinder from "geojson-path-finder";
 import CustomMarker from "../Marker/CustomMarker";
 import { MapProps, Road, SourcesConfig } from "../../interfaces";
 import Layer from "../Layer/Layer";

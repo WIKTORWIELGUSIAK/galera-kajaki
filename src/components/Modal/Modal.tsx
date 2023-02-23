@@ -1,7 +1,7 @@
 /** @format */
 
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { ArrowLeft, ArrowRight } from "../../shared";
+import { useState } from "../../shared";
 import { ModalInterface } from "../../interfaces";
 import styles from "./Modal.module.css";
 

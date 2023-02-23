@@ -1,6 +1,6 @@
 /** @format */
 
-import { useEffect } from "react";
+import { useEffect } from "../../shared";
 import { MarkerProps } from "../../interfaces";
 
 const CustomMarker = ({

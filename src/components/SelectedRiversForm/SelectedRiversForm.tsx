@@ -1,8 +1,12 @@
 /** @format */
 
-import { useForm } from "react-hook-form";
-import axios from "axios";
-import { Feature, GeoJsonProperties, LineString } from "geojson";
+import {
+  useForm,
+  axios,
+  Feature,
+  GeoJsonProperties,
+  LineString,
+} from "../../shared";
 import style from "./SelectedRiversForm.module.css";
 import {
   SelectedRiversFormData,
@@ -17,7 +21,8 @@ function SelectedRiversForm({
     console.log("submit");
     const config = {
       method: "get",
-      url: `https://galera-backend-service.vercel.app/search_river?name=${data.riverName}`,
+      // url: `https://galera-backend-service.vercel.app/search_river?name=${data.riverName}`,
+      url: `http://localhost:3001/search_river?name=${data.riverName}`,
       headers: {
         accept: "application/json; charset=utf-8",
         "Content-Type": "application/json; charset=utf-8",

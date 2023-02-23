@@ -1,22 +1,29 @@
 /** @format */
 
-import axios from "axios";
-import { Feature, GeoJsonProperties, LineString, Position } from "geojson";
-import { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  axios,
+  Feature,
+  GeoJsonProperties,
+  LineString,
+  Position,
+  useEffect,
+  useState,
+  Router,
+  Route,
+  Routes,
+} from "../shared";
 import CustomMap from "../components/Map/Map";
+import { MapboxGLMap } from "../shared";
 import RoadForm from "../components/RoadForm/RoadForm";
 import RoadInformations from "../components/RoadInformation/RoadInformations";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { Road } from "../interfaces";
-import { MapboxGLMap } from "../shared";
 import StyledMapPage from "./MapPage.module.css";
 
 const MapPage = () => {
   const [selectedRivers, setSelectedRivers] = useState<
     Feature<LineString, GeoJsonProperties>[]
   >([]);
-  // const navigate = useNavigate();
   const [newRoadCoords, setNewRoadCoords] = useState<Position[]>([]);
   const [roads, setRoads] = useState<Road[]>([]);
   const [roadsLoading, setRoadsLoading] = useState<boolean>(true);
@@ -27,7 +34,8 @@ const MapPage = () => {
   useEffect(() => {
     const config = {
       method: "get",
-      url: `https://galera-backend-service.vercel.app/getRoads`,
+      // url: `https://galera-backend-service.vercel.app/getRoads`,
+      url: `http://localhost:3001/getRoads`,
       headers: {
         accept: "application/json; charset=utf-8",
         "Content-Type": "application/json; charset=utf-8",
