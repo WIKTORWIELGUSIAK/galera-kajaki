@@ -89,7 +89,10 @@ const Sidebar = ({ roads, map, setRoadId }: SidebarProps) => {
         <div>
           <header className={style.header}>
             <h1 className={style.h1}>Galera</h1>
-            <img src="/logo.png" alt="" />
+            <img
+              src="https://drive.google.com/uc?export=view&id=1L84IpxY2kwFPJEw9PiyDZt2SGFPQtuY7"
+              alt=""
+            />
           </header>
           <div className={style.road}>
             <Link

@@ -28,7 +28,8 @@ const Modal = ({ setFirstOpen }: ModalInterface) => {
       content:
         "Na początek należy dodać pierwszą trasę na mapie aby było co wyświetlić",
       tip: 'Aby przejść do trybu dodawania wystarczy nacisnąć przycisk "Dodaj" przedstawiony na zdjęciu poniżej',
-      photo: "/p1.jpg",
+      photo:
+        "https://drive.google.com/uc?export=view&id=1drDN7HwwY7HG2w-BqJpGcLMeXkG_cftR",
     },
     {
       id: 4,
@@ -36,7 +37,8 @@ const Modal = ({ setFirstOpen }: ModalInterface) => {
       content:
         "Następnym etapem jest dodanie rzek, po których ma przebiegać trasa",
       tip: "Najlepiej wybrać rzeki, które się ze sobą łączą ponieważ tylko na takich zostanie wytyczona trasa",
-      photo: "/p2.jpg",
+      photo:
+        "https://drive.google.com/uc?export=view&id=1d9WTY2SfBcMAzyyr0y-A5FjHRrZGQQuA",
     },
     {
       id: 5,
@@ -44,7 +46,8 @@ const Modal = ({ setFirstOpen }: ModalInterface) => {
       content:
         "Ostatnim etapem dodawania trasy jest nadanie jej nazwy, można również dodać do niej opis, oraz należy nadać jej kolor",
       tip: "Lepiej nie dodawać wielu tras z tym samym kolorem ponieważ ciężko je będzie na pierwszy rzut oka odróżnić :)",
-      photo: "/p3.jpg",
+      photo:
+        "https://drive.google.com/uc?export=view&id=1xlc4gfZVPnSpCGfuGieBOiB2xGJIW7fX",
     },
     {
       id: 6,
@@ -52,7 +55,8 @@ const Modal = ({ setFirstOpen }: ModalInterface) => {
       content:
         "Jeżeli zobaczysz taki przycisk zaznaczony ramką poniżej jak poniżej w prawym górnym rogu panelu to po kliknięciu go przechodzisz w tryb edycji trasy",
       tip: "Wygląda on tak samo jak tryb dodawania więc nie będę go ponownie opisywał",
-      photo: "/p5.jpg",
+      photo:
+        "https://drive.google.com/uc?export=view&id=19GuqcJeB9QQylCZ34HDwj3ZWxTt1Fe3Z",
       warrning:
         "Na koniec chciałbym zaznaczyć, że na niektórych trasach rzek występują dziury co jest spowodowane niedokładnością danych odnośnie ich przebiegu zaciągniętych ze strony państwowej. Są to jednak najdokładniejsze dane dostępne w internecie na ten moment.",
     },
