@@ -178,28 +178,12 @@ const Map = ({
       });
     }
   }, [newRoadCoords]);
-
-  // ##########################################################################################################
-  // Function to set rivers to display on map
-  // ##########################################################################################################
-
-  // ##########################################################################################################
-  // Function to set cursor to pointer on hover over rivers lines
-  // ##########################################################################################################
   map.current?.on("mouseenter", "rivers", () => {
     if (map.current) map.current.getCanvas().style.cursor = "pointer";
   });
-
-  // ##########################################################################################################
-  // Function to change back cursor when it leaves
-  // ##########################################################################################################
   map.current?.on("mouseleave", "rivers", () => {
     if (map.current) map.current.getCanvas().style.cursor = "";
   });
-
-  // ##########################################################################################################
-  // Function set coordinates from clicked river to state
-  // ##########################################################################################################
 
   function handleMarkerDragEnd(
     e: EventData,
@@ -258,7 +242,6 @@ const Map = ({
         {roads.map((road: Road) => {
           return (
             <Layer
-              // hover={hovered === road}
               key={road.id}
               id={`Layer${JSON.stringify(road.id)}`}
               source={`Road${road.id}`}
