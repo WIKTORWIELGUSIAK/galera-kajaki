@@ -22,8 +22,9 @@ function App() {
   // });
   const map = useRef<MapboxGLMap | undefined>();
   const mapContainer = useRef<HTMLDivElement>(null);
-  useEffect(() => {
+  const renderMap = () => {
     if (map.current) return;
+
     map.current = new MapboxGLMap({
       container: mapContainer.current!,
       accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
@@ -31,7 +32,12 @@ function App() {
       center: [-74.5, 40], // starting position [lng, lat]
       zoom: 9, // starting zoom
     });
-  }, []);
+  };
+  useEffect(() => {
+    if (firstOpen === "false") {
+      renderMap();
+    }
+  }, [firstOpen]);
   return (
     <div className="App">
       {/* <MapPage /> */}
