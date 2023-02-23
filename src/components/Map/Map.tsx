@@ -1,6 +1,6 @@
 /** @format */
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Feature,
   FeatureCollection,
@@ -67,7 +67,7 @@ const Map = ({
           tempCoordinates.push(cord);
         });
     });
-    setCoordinates((prevCoordinates) => {
+    setCoordinates(() => {
       return tempCoordinates;
     });
   }, [selectedRivers]);
@@ -84,20 +84,27 @@ const Map = ({
       setEndMarkerCoords([]);
     }
   }, [newRoadCoords]);
-  const listener = (e: MapMouseEvent) => {
-    if (coordinates.length === 0) {
-      return;
-    }
-    const cords = findClosestCoords(coordinates, [e.lngLat.lng, e.lngLat.lat]);
+  const listener = useCallback(
+    (e: MapMouseEvent) => {
+      if (coordinates.length === 0) {
+        return;
+      }
+      const cords = findClosestCoords(coordinates, [
+        e.lngLat.lng,
+        e.lngLat.lat,
+      ]);
 
-    if (!startMarkerRef.current) {
-      createStartMarker(cords);
-    } else if (!endMarkerRef.current) {
-      createEndMarker(cords);
-    } else {
-      updateEndMarker(cords);
-    }
-  };
+      if (!startMarkerRef.current) {
+        createStartMarker(cords);
+      } else if (!endMarkerRef.current) {
+        createEndMarker(cords);
+      } else {
+        updateEndMarker(cords);
+      }
+    },
+    [coordinates]
+  );
+
   const createStartMarker = (cords: number[]) => {
     startMarkerRef.current = new Marker({ draggable: true });
     setStartMarkerCoords(cords);
