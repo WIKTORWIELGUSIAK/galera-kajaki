@@ -95,7 +95,7 @@ const MapPage = () => {
   }, [map, location.pathname]);
   return !roadsLoading ? (
     <main className={StyledMapPage.main}>
-      <Router>
+      {/* <Router>
         {map ? (
           <Routes>
             <Route
@@ -179,18 +179,18 @@ const MapPage = () => {
           </Routes>
         ) : (
           <div>Map Loading...</div>
-        )}
-        <CustomMap
-          selectedRivers={selectedRivers}
-          newRoadCoords={newRoadCoords}
-          setNewRoadCoords={setNewRoadCoords}
-          roads={roads}
-          setRoads={setRoads}
-          map={map}
-          setMap={setMap}
-          roadId={roadId}
-        />
-      </Router>
+        )} */}
+      <CustomMap
+        selectedRivers={selectedRivers}
+        newRoadCoords={newRoadCoords}
+        setNewRoadCoords={setNewRoadCoords}
+        roads={roads}
+        setRoads={setRoads}
+        map={map}
+        setMap={setMap}
+        roadId={roadId}
+      />
+      {/* </Router> */}
     </main>
   ) : (
     <div>Loading...</div>
