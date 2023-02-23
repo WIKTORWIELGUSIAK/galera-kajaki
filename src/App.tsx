@@ -27,7 +27,7 @@ function App() {
     map.current = new MapboxGLMap({
       container: mapContainer.current!,
       accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
-      style: "mapbox://styles/mapbox/outdoors-v12",
+      style: "mapbox://styles/mapbox/outdoors-v11",
       center: [-74.5, 40], // starting position [lng, lat]
       zoom: 9, // starting zoom
     });
