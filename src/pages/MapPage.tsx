@@ -19,6 +19,7 @@ import RoadInformations from "../components/RoadInformation/RoadInformations";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { Road } from "../interfaces";
 import StyledMapPage from "./MapPage.module.css";
+import { SERVER_URL } from "../../config";
 
 const MapPage = () => {
   const [selectedRivers, setSelectedRivers] = useState<
@@ -31,26 +32,26 @@ const MapPage = () => {
   const [roadId, setRoadId] = useState<number | undefined>();
   const [startEdit, setStartEdit] = useState(false);
 
-  // useEffect(() => {
-  //   const config = {
-  //     method: "get",
-  //     url: `https://galera-backend-service.vercel.app/getRoads`,
-  //     headers: {
-  //       accept: "application/json; charset=utf-8",
-  //       "Content-Type": "application/json; charset=utf-8",
-  //     },
-  //     data: {},
-  //   };
+  useEffect(() => {
+    const config = {
+      method: "get",
+      url: `${SERVER_URL}/getRoads`,
+      headers: {
+        accept: "application/json; charset=utf-8",
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      data: {},
+    };
 
-  //   axios(config)
-  //     .then(function (response) {
-  //       setRoads(response.data);
-  //       setRoadsLoading(false);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  // }, []);
+    axios(config)
+      .then(function (response) {
+        setRoads(response.data);
+        setRoadsLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
   useEffect(() => {
     if (map) {
       if (location.pathname === "/") {
@@ -118,7 +119,7 @@ const MapPage = () => {
                 />
               }
             />
-            {/* {roads.map((road) => {
+            {roads.map((road) => {
               return (
                 <Route
                   key={road.id}
@@ -158,7 +159,7 @@ const MapPage = () => {
                   }
                 />
               );
-            })} */}
+            })}
             <Route
               path={`/road/add`}
               element={
@@ -189,6 +190,7 @@ const MapPage = () => {
           map={map}
           setMap={setMap}
           roadId={roadId}
+          // firstOpen={firstOpen}
         />
       </Router>
     </main>

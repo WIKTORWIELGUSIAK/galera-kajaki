@@ -11,6 +11,7 @@ import {
 } from "../../shared";
 import SelectedRiversForm from "../SelectedRiversForm/SelectedRiversForm";
 import { replaceElement } from "../../Helpers/replaceElement";
+import { SERVER_URL } from "../../../config";
 
 const RoadForm = ({
   map,
@@ -53,7 +54,7 @@ const RoadForm = ({
     const config = {
       method: startEdit ? "put" : "post",
 
-      url: `https://galera-backend-service.vercel.app/roads`,
+      url: `${SERVER_URL}/roads`,
       headers: {
         accept: "application/json; charset=utf-8",
         "Content-Type": "application/json; charset=utf-8",
