@@ -1,16 +1,15 @@
 /** @format */
 
-import { LineString } from "@turf/turf";
-import { Feature, GeoJsonProperties, Position } from "geojson";
-import { EventData, LngLatLike, Map, Marker } from "mapbox-gl";
+import { Feature, GeoJsonProperties, Position, LineString } from "geojson";
 import { Dispatch, SetStateAction } from "react";
+import { LngLatLike, MapboxGLMap, Marker } from "./shared";
 
 export interface RiverFormInterface {
   selectedRivers: Feature[];
   newRoadCoords: Position[];
   roads: Road[];
   setRoads: Dispatch<SetStateAction<Road[]>>;
-  map: Map;
+  map: MapboxGLMap;
   setNewRoadCoords: Dispatch<SetStateAction<Position[]>>;
   setSelectedRivers: Dispatch<
     SetStateAction<Feature<LineString, GeoJsonProperties>[]>
@@ -25,8 +24,8 @@ export interface GeoJsonObject {
 }
 export interface SourcesConfig {
   roads: Road[];
-  map: Map;
-  setMap: Dispatch<SetStateAction<Map | undefined>>;
+  map: MapboxGLMap;
+  setMap: Dispatch<SetStateAction<MapboxGLMap | undefined>>;
   data: Source[];
   setLoadingSource: Dispatch<SetStateAction<boolean>>;
   loadingSource: boolean;
@@ -40,12 +39,12 @@ export interface LayerProps {
   id: string;
   source: string;
   color: string;
-  map: Map | undefined;
+  map: MapboxGLMap | undefined;
   loadingSource: boolean;
   hover?: boolean;
 }
 export interface MarkerProps {
-  map?: Map;
+  map?: MapboxGLMap;
   marker?: Marker | null;
   lngLat: LngLatLike;
   onDragEnd?: (e: any) => void;
@@ -61,8 +60,8 @@ export interface SidebarProps {
   roads: Road[];
   setRoads: Dispatch<SetStateAction<Road[]>>;
   setRoadsLoading: Dispatch<SetStateAction<boolean>>;
-  map: Map;
-  setMap: Dispatch<SetStateAction<Map | undefined>>;
+  map: MapboxGLMap;
+  setMap: Dispatch<SetStateAction<MapboxGLMap | undefined>>;
   roadId: number | undefined;
   setRoadId: Dispatch<SetStateAction<number | undefined>>;
   setStartEdit: Dispatch<SetStateAction<boolean>>;
@@ -74,8 +73,8 @@ export interface MapProps {
   setNewRoadCoords: Dispatch<SetStateAction<Position[]>>;
   roads: Road[];
   setRoads: Dispatch<SetStateAction<Road[]>>;
-  map: Map | undefined;
-  setMap: Dispatch<SetStateAction<Map | undefined>>;
+  map: MapboxGLMap | undefined;
+  setMap: Dispatch<SetStateAction<MapboxGLMap | undefined>>;
   roadId: number | undefined;
 }
 export interface Road {
@@ -87,7 +86,7 @@ export interface Road {
 }
 
 export interface RoadFormInterface {
-  map: Map;
+  map: MapboxGLMap;
   road?: Road;
   roads: Road[];
   setRoads: Dispatch<SetStateAction<Road[]>>;
@@ -103,7 +102,7 @@ export interface RoadFormInterface {
 }
 
 export interface RoadInformationsInterface {
-  map: Map;
+  map: MapboxGLMap;
   roads: Road[];
   road: Road;
   setSelectedRivers: Dispatch<

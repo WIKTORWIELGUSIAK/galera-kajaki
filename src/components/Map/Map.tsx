@@ -8,14 +8,7 @@ import {
   LineString,
   Point,
 } from "geojson";
-import {
-  GeoJSONSource,
-  Marker,
-  Map as MapboxGLMap,
-  MapMouseEvent,
-  EventData,
-  LngLatLike,
-} from "mapbox-gl";
+
 import "mapbox-gl/dist/mapbox-gl.css";
 import "/src/App.css";
 import PathFinder from "geojson-path-finder";
@@ -24,6 +17,14 @@ import { MapProps, Road, SourcesConfig } from "../../interfaces";
 import Layer from "../Layer/Layer";
 import Source from "../Source/Source";
 import { findClosestCoords } from "../../Helpers/findClosestCords";
+import {
+  EventData,
+  GeoJSONSource,
+  LngLatLike,
+  MapboxGLMap,
+  MapMouseEvent,
+  Marker,
+} from "../../shared";
 
 const Map = ({
   selectedRivers,

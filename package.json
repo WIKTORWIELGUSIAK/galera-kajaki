@@ -12,7 +12,6 @@
     "@hookform/resolvers": "^2.9.10",
     "@mapbox/mapbox-gl-supported": "^2.0.1",
     "@next-tools/dynamic": "^0.0.11",
-    "@turf/turf": "^6.5.0",
     "axios": "^1.2.1",
     "geojson": "^0.5.0",
     "geojson-path-finder": "^2.0.1",

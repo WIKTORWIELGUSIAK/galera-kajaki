@@ -2,7 +2,6 @@
 
 import axios from "axios";
 import { Feature, GeoJsonProperties, LineString, Position } from "geojson";
-import { Map } from "mapbox-gl";
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CustomMap from "../components/Map/Map";
@@ -10,6 +9,7 @@ import RoadForm from "../components/RoadForm/RoadForm";
 import RoadInformations from "../components/RoadInformation/RoadInformations";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { Road } from "../interfaces";
+import { MapboxGLMap } from "../shared";
 import StyledMapPage from "./MapPage.module.css";
 
 const MapPage = () => {
@@ -20,7 +20,7 @@ const MapPage = () => {
   const [newRoadCoords, setNewRoadCoords] = useState<Position[]>([]);
   const [roads, setRoads] = useState<Road[]>([]);
   const [roadsLoading, setRoadsLoading] = useState<boolean>(true);
-  const [map, setMap] = useState<Map | undefined>();
+  const [map, setMap] = useState<MapboxGLMap | undefined>();
   const [roadId, setRoadId] = useState<number | undefined>();
   const [startEdit, setStartEdit] = useState(false);
 

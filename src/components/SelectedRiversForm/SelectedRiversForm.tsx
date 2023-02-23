@@ -2,8 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { Feature, GeoJsonProperties } from "geojson";
-import { LineString } from "@turf/turf";
+import { Feature, GeoJsonProperties, LineString } from "geojson";
 import style from "./SelectedRiversForm.module.css";
 import {
   SelectedRiversFormData,
