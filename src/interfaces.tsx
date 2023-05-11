@@ -2,8 +2,7 @@
 
 import { Feature, GeoJsonProperties, Position, LineString } from "geojson";
 import { Dispatch, SetStateAction } from "react";
-import { LngLatLike, MapboxGLMap, Marker } from "./shared";
-
+import { Marker, Map as MapboxGLMap, LngLatLike } from "mapbox-gl";
 export interface RiverFormInterface {
   selectedRivers: Feature[];
   newRoadCoords: Position[];
@@ -127,6 +126,7 @@ export interface SelectedRiversFormInterface {
 
 export interface ModalInterface {
   setFirstOpen: Dispatch<any>;
+  setLoadMapPage: any;
 }
 export interface LinkProps {
   name: string;

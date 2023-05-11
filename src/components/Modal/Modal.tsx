@@ -1,11 +1,11 @@
 /** @format */
 
-import { ArrowLeft, ArrowRight } from "../../shared";
-import { useState } from "../../shared";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ModalInterface } from "../../interfaces";
 import styles from "./Modal.module.css";
+import { useState } from "react";
 
-const Modal = ({ setFirstOpen }: ModalInterface) => {
+const Modal = ({ setFirstOpen, setLoadMapPage }: ModalInterface) => {
   const [currentPage, setCurrentPage] = useState(1);
   const pages = [
     {
@@ -58,8 +58,11 @@ const Modal = ({ setFirstOpen }: ModalInterface) => {
     },
   ];
   const handleClose = () => {
-    // Code to close the modal
     setFirstOpen("false");
+  };
+
+  const handleHover = () => {
+    setLoadMapPage(true);
   };
 
   const handleNext = () => {
@@ -70,8 +73,13 @@ const Modal = ({ setFirstOpen }: ModalInterface) => {
     setCurrentPage(Math.max(currentPage - 1, 1));
   };
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modal}>
+    <div
+      className={styles.modalOverlay}
+      // className={`${styles.modalOverlay} ${
+      //   isClosing ? styles.noBackground : ""
+      // }`}
+    >
+      <div className={styles.modal} onMouseEnter={() => handleHover()}>
         <p className={styles.counter}>
           {currentPage}/{pages.length}
         </p>

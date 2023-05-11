@@ -1,17 +1,13 @@
 /** @format */
 
+import styles from "./Map.module.css";
 import {
   Feature,
   FeatureCollection,
   GeoJsonProperties,
   LineString,
-  PathFinder,
   Point,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "../../shared";
+} from "geojson";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "/src/App.css";
 import CustomMarker from "../Marker/CustomMarker";
@@ -23,10 +19,12 @@ import {
   EventData,
   GeoJSONSource,
   LngLatLike,
-  MapboxGLMap,
+  Map as MapboxGLMap,
   MapMouseEvent,
   Marker,
-} from "../../shared";
+} from "mapbox-gl";
+import { useCallback, useEffect, useRef, useState } from "react";
+import PathFinder from "geojson-path-finder";
 
 const Map = ({
   selectedRivers,
@@ -228,11 +226,7 @@ const Map = ({
   };
   return (
     <div>
-      <div
-        style={{ width: "100%", height: "100vh" }}
-        ref={mapContainer}
-        className="rivers-map"
-      >
+      <div ref={mapContainer} className={styles.Map}>
         <Source {...sourcesConfig} />
 
         <Layer

@@ -1,19 +1,17 @@
 /** @format */
 
+import { useState, useEffect } from "react";
+import { Feature, GeoJsonProperties, LineString, Position } from "geojson";
+import { Map as MapboxGLMap } from "mapbox-gl";
+import axios from "axios";
 import {
-  axios,
-  Feature,
-  GeoJsonProperties,
-  LineString,
-  Position,
-  useEffect,
-  useState,
-  Router,
+  useNavigate,
+  BrowserRouter as Router,
   Route,
   Routes,
-} from "../shared";
+} from "react-router-dom";
+export { useNavigate, Router, Route, Routes };
 import CustomMap from "../components/Map/Map";
-import { MapboxGLMap } from "../shared";
 import RoadForm from "../components/RoadForm/RoadForm";
 import RoadInformations from "../components/RoadInformation/RoadInformations";
 import Sidebar from "../components/Sidebar/Sidebar";
@@ -178,9 +176,7 @@ const MapPage = () => {
               }
             />
           </Routes>
-        ) : (
-          <div>Map Loading...</div>
-        )}
+        ) : null}
         <CustomMap
           selectedRivers={selectedRivers}
           newRoadCoords={newRoadCoords}
@@ -190,7 +186,6 @@ const MapPage = () => {
           map={map}
           setMap={setMap}
           roadId={roadId}
-          // firstOpen={firstOpen}
         />
       </Router>
     </main>

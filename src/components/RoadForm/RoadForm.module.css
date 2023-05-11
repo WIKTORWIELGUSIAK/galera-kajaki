@@ -66,3 +66,8 @@
   top: 20px;
   right: 10px;
 }
+
+.colorSelect {
+  display: flex;
+  align-items: center;
+}

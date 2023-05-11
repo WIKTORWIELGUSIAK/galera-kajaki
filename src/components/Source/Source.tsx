@@ -1,6 +1,6 @@
 /** @format */
 
-import { useEffect } from "../../shared";
+import { useEffect } from "react";
 import { SourcesConfig } from "../../interfaces";
 
 function Sources({

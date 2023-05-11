@@ -3,7 +3,6 @@
 import { defineConfig } from "vite";
 // @ts-ignore
 import { dependencies } from "./package.json";
-// import react from '@vitejs/plugin-react'
 
 function renderChunks(deps: Record<string, string>) {
   let chunks = {};
@@ -13,7 +12,6 @@ function renderChunks(deps: Record<string, string>) {
   });
   return chunks;
 }
-// https://vitejs.dev/config/
 export default defineConfig({
   build: {
     sourcemap: false,

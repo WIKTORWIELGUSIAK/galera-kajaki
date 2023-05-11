@@ -1,6 +1,8 @@
 /** @format */
 
-import { useState, useNavigate, ArrowLeftCircle } from "../../shared";
+import { useState } from "react";
+import { ArrowLeftCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Road, SidebarProps } from "../../interfaces";
 import style from "./Sidebar.module.css";
 import Link from "../Link/Link";

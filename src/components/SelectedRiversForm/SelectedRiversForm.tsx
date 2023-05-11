@@ -1,13 +1,9 @@
 /** @format */
 
-import {
-  useForm,
-  axios,
-  Feature,
-  GeoJsonProperties,
-  LineString,
-} from "../../shared";
 import style from "./SelectedRiversForm.module.css";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import { Feature, GeoJsonProperties, LineString } from "geojson";
 import {
   SelectedRiversFormData,
   SelectedRiversFormInterface,

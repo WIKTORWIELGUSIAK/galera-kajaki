@@ -1,14 +1,12 @@
 /** @format */
 
+import styles from "./RoadForm.module.css";
 import { Road, RoadFormInterface, RoadFormData } from "../../interfaces";
-import style from "./RoadForm.module.css";
-import {
-  ArrowLeftCircle,
-  axios,
-  useEffect,
-  useForm,
-  useNavigate,
-} from "../../shared";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
+import { ArrowLeftCircle } from "lucide-react";
 import SelectedRiversForm from "../SelectedRiversForm/SelectedRiversForm";
 import { replaceElement } from "../../Helpers/replaceElement";
 import { SERVER_URL } from "../../../config";
@@ -160,13 +158,13 @@ const RoadForm = ({
     road ? navigate(`/road${road.id}`) : navigate("/");
   };
   return (
-    <div className={style.RoadForm}>
-      <h2 className={style.h2}>{road ? road.name : "Nowa trasa"}</h2>
-      <p className={style.description}></p>
-      <div className={style.buttons}>
+    <div className={styles.RoadForm}>
+      <h2 className={styles.h2}>{road ? road.name : "Nowa trasa"}</h2>
+      <p className={styles.description}></p>
+      <div className={styles.buttons}>
         <ArrowLeftCircle
           onClick={clickArrowHandler}
-          className={style.arrowIcon}
+          className={styles.arrowIcon}
         />
       </div>
       <SelectedRiversForm
@@ -179,14 +177,14 @@ const RoadForm = ({
           <input
             id="name"
             type="text"
-            className={style.textInput}
+            className={styles.textInput}
             {...register("name", { required: true, minLength: 3 })}
           />
         </div>
         {errors.name && (
           <p
-            className={`${style.errorMessage} ${
-              errors.name ? style.error : ""
+            className={`${styles.errorMessage} ${
+              errors.name ? styles.error : ""
             }`}
           >
             Proszę podaj jedną z polskich rzek
@@ -196,19 +194,19 @@ const RoadForm = ({
         <input
           id="description"
           type="text"
-          className={style.textInput}
+          className={styles.textInput}
           {...register("description")}
         />
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div className={styles.colorSelect}>
           <label htmlFor="color">Kolor:</label>
           <input
             id="color"
             type="color"
-            className={style.color}
+            className={styles.color}
             {...register("color")}
           />
         </div>
-        <button type="submit" className={style.button}>
+        <button type="submit" className={styles.button}>
           {startEdit ? "Zapisz" : "Dodaj trasę"}
         </button>
       </form>
